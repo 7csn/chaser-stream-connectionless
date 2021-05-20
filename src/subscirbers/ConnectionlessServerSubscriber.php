@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace chaser\stream\subscribers;
 
-use chaser\container\ContainerInterface;
 use chaser\stream\events\AcceptData;
 use chaser\stream\interfaces\ConnectionlessServerInterface;
 
@@ -17,17 +16,6 @@ use chaser\stream\interfaces\ConnectionlessServerInterface;
  */
 class ConnectionlessServerSubscriber extends ServerSubscriber
 {
-    /**
-     * 构造方法
-     *
-     * @param ContainerInterface $container
-     * @param ConnectionlessServerInterface $server
-     */
-    public function __construct(ContainerInterface $container, ConnectionlessServerInterface $server)
-    {
-        parent::__construct($container, $server);
-    }
-
     /**
      * @inheritDoc
      */
