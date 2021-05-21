@@ -16,11 +16,10 @@ use chaser\stream\interfaces\parts\ConnectionlessServiceInterface;
 trait ConnectionlessService
 {
     /**
-     * 常规配置
-     *
-     * @var array
+     * @inheritDoc
      */
-    protected array $configurations = [
-        'maxPackageSize' => self::MAX_PACKAGE_SIZE
-    ];
+    protected function configurations(): array
+    {
+        return ['maxPackageSize' => self::MAX_PACKAGE_SIZE] + parent::configurations();
+    }
 }

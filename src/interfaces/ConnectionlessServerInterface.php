@@ -12,11 +12,6 @@ use chaser\stream\interfaces\parts\ConnectionlessServiceInterface;
 interface ConnectionlessServerInterface extends ConnectionlessServiceInterface, ServerInterface
 {
     /**
-     * 接受客户端数据
-     */
-    public function acceptData(): void;
-
-    /**
      * 发送数据到指定客户端地址
      *
      * @param string $data

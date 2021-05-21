@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace chaser\stream;
 
-use chaser\stream\exceptions\ClientConnectedException;
+use chaser\stream\exceptions\ClientCreatedException;
 use chaser\stream\interfaces\ConnectionlessClientInterface;
 use chaser\stream\traits\ConnectionlessService;
 use chaser\stream\events\{Connect, Message};
@@ -57,14 +57,14 @@ abstract class ConnectionlessClient extends Client implements ConnectionlessClie
     /**
      * @inheritDoc
      *
-     * @throws ClientConnectedException
+     * @throws ClientCreatedException
      */
-    public function connect()
+    public function connect(): void
     {
         if ($this->connected === false) {
             $this->create();
             stream_set_blocking($this->socket, false);
-            $this->addReadReactor([$this, 'receive']);
+            $this->addReadReact('receive');
             $this->connected = true;
             $this->dispatch(Connect::class);
         }
@@ -76,7 +76,7 @@ abstract class ConnectionlessClient extends Client implements ConnectionlessClie
     public function close(): void
     {
         if ($this->socket) {
-            $this->delReadReactor();
+            $this->delReadReact();
             $this->closeSocket();
             $this->connected = false;
         }

@@ -6,7 +6,6 @@ namespace chaser\stream;
 
 use chaser\stream\events\AcceptData;
 use chaser\stream\interfaces\ConnectionlessServerInterface;
-use chaser\stream\subscribers\ConnectionlessServerSubscriber;
 use chaser\stream\traits\ConnectionlessService;
 
 /**
@@ -26,15 +25,7 @@ abstract class ConnectionlessServer extends Server implements ConnectionlessServ
     /**
      * @inheritDoc
      */
-    public static function subscriber(): string
-    {
-        return ConnectionlessServerSubscriber::class;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function acceptData(): void
+    public function accept(): void
     {
         $receive = stream_socket_recvfrom($this->socket, $this->maxPackageSize, 0, $remoteAddress);
 
