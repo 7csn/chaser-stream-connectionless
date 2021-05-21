@@ -20,6 +20,6 @@ trait ConnectionlessService
      */
     protected function configurations(): array
     {
-        return ['maxPackageSize' => self::MAX_PACKAGE_SIZE] + parent::configurations();
+        return ['maxPackageSize' => self::MAX_PACKAGE_SIZE];
     }
 }
