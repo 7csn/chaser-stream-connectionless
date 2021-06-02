@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace chaser\stream\subscribers;
 
+use chaser\stream\ConnectionlessServer;
 use chaser\stream\events\AcceptData;
-use chaser\stream\interfaces\ConnectionlessServerInterface;
 
 /**
  * 无连接的流服务器事件订阅类
  *
  * @package chaser\stream\subscribers
  *
- * @property ConnectionlessServerInterface $server
+ * @property ConnectionlessServer $server
  */
 class ConnectionlessServerSubscriber extends ServerSubscriber
 {

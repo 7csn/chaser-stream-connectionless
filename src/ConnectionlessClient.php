@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace chaser\stream;
 
-use chaser\stream\exceptions\ClientCreatedException;
-use chaser\stream\interfaces\ConnectionlessClientInterface;
-use chaser\stream\traits\ConnectionlessService;
-use chaser\stream\events\{Connect, Message};
+use chaser\stream\interfaces\parts\ConnectionlessServiceInterface;
+use chaser\stream\events\Message;
 
 /**
  * 无连接的流客户端类
  *
  * @package chaser\stream
+ *
+ * @property int $maxPackageSize
  */
-abstract class ConnectionlessClient extends Client implements ConnectionlessClientInterface
+abstract class ConnectionlessClient extends Client implements ConnectionlessServiceInterface
 {
-    use ConnectionlessService;
-
     /**
      * @inheritDoc
      */
@@ -29,11 +27,24 @@ abstract class ConnectionlessClient extends Client implements ConnectionlessClie
     protected static int $timeout = 30;
 
     /**
-     * 连接状态
-     *
-     * @var bool
+     * @inheritDoc
      */
-    protected bool $connected = false;
+    public function configurations(): array
+    {
+        return ['maxPackageSize' => self::MAX_PACKAGE_SIZE] + parent::configurations();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function ready(): void
+    {
+        if (!isset($this->socket)) {
+            $this->create();
+            stream_set_blocking($this->socket, false);
+            $this->readyHandle();
+        }
+    }
 
     /**
      * @inheritDoc
@@ -56,29 +67,12 @@ abstract class ConnectionlessClient extends Client implements ConnectionlessClie
 
     /**
      * @inheritDoc
-     *
-     * @throws ClientCreatedException
-     */
-    public function connect(): void
-    {
-        if ($this->connected === false) {
-            $this->create();
-            stream_set_blocking($this->socket, false);
-            $this->addReadReact('receive');
-            $this->connected = true;
-            $this->dispatch(Connect::class);
-        }
-    }
-
-    /**
-     * @inheritDoc
      */
     public function close(): void
     {
         if ($this->socket) {
             $this->delReadReact();
             $this->closeSocket();
-            $this->connected = false;
         }
     }
 }

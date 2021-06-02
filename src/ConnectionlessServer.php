@@ -5,22 +5,29 @@ declare(strict_types=1);
 namespace chaser\stream;
 
 use chaser\stream\events\AcceptData;
-use chaser\stream\interfaces\ConnectionlessServerInterface;
-use chaser\stream\traits\ConnectionlessService;
+use chaser\stream\interfaces\parts\ConnectionlessServiceInterface;
 
 /**
  * 无连接的流服务器
  *
  * @package chaser\stream
+ *
+ * @property int $maxPackageSize
  */
-abstract class ConnectionlessServer extends Server implements ConnectionlessServerInterface
+abstract class ConnectionlessServer extends Server implements ConnectionlessServiceInterface
 {
-    use ConnectionlessService;
-
     /**
      * @inheritDoc
      */
     protected static int $flags = STREAM_SERVER_BIND;
+
+    /**
+     * @inheritDoc
+     */
+    public function configurations(): array
+    {
+        return ['maxPackageSize' => self::MAX_PACKAGE_SIZE] + parent::configurations();
+    }
 
     /**
      * @inheritDoc
@@ -35,7 +42,11 @@ abstract class ConnectionlessServer extends Server implements ConnectionlessServ
     }
 
     /**
-     * @inheritDoc
+     * 发送数据到指定客户端
+     *
+     * @param string $data
+     * @param string $remoteAddress
+     * @return bool
      */
     public function send(string $data, string $remoteAddress): bool
     {
