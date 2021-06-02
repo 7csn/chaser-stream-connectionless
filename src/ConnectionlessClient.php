@@ -39,7 +39,7 @@ abstract class ConnectionlessClient extends Client implements ConnectionlessServ
      */
     public function ready(): void
     {
-        if (!isset($this->socket)) {
+        if ($this->socket === null) {
             $this->create();
             stream_set_blocking($this->socket, false);
             $this->readyHandle();
