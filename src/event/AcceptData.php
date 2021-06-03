@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace chaser\stream\events;
+namespace chaser\stream\event;
 
 use chaser\stream\traits\PropertyReadable;
 
 /**
  * 服务器接收数据事件类
  *
- * @package chaser\stream\events
+ * @package chaser\stream\event
  *
  * @property-read string $data
  * @property-read string $remoteAddress

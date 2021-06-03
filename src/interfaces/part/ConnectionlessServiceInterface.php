@@ -1,11 +1,11 @@
 <?php
 
-namespace chaser\stream\interfaces\parts;
+namespace chaser\stream\interfaces\part;
 
 /**
  * 无连接的流服务部分接口
  *
- * @package chaser\stream\interfaces\parts
+ * @package chaser\stream\interfaces\part
  */
 interface ConnectionlessServiceInterface
 {

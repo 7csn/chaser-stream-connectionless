@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace chaser\stream;
 
-use chaser\stream\interfaces\parts\ConnectionlessServiceInterface;
-use chaser\stream\events\Message;
+use chaser\stream\interfaces\part\ConnectionlessServiceInterface;
+use chaser\stream\event\Message;
 
 /**
  * 无连接的流客户端类
