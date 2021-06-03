@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace chaser\stream;
 
-use chaser\stream\interfaces\part\ConnectionlessServiceInterface;
 use chaser\stream\event\Message;
+use chaser\stream\traits\CommonConnectionless;
 
 /**
  * 无连接的流客户端类
  *
  * @package chaser\stream
- *
- * @property int $maxPackageSize
  */
-abstract class ConnectionlessClient extends Client implements ConnectionlessServiceInterface
+abstract class ConnectionlessClient extends Client
 {
+    use CommonConnectionless;
+
     /**
      * @inheritDoc
      */
@@ -29,9 +29,9 @@ abstract class ConnectionlessClient extends Client implements ConnectionlessServ
     /**
      * @inheritDoc
      */
-    public function configurations(): array
+    public static function configurations(): array
     {
-        return ['maxPackageSize' => self::MAX_PACKAGE_SIZE] + parent::configurations();
+        return CommonConnectionless::configurations() + parent::configurations();
     }
 
     /**
@@ -51,9 +51,11 @@ abstract class ConnectionlessClient extends Client implements ConnectionlessServ
      */
     public function receive(): void
     {
-        $receive = stream_socket_recvfrom($this->socket, $this->maxPackageSize);
-        if ($receive) {
-            $this->dispatch(Message::class, $receive);
+        if ($this->socket) {
+            $receive = stream_socket_recvfrom($this->socket, $this->maxPackageSize);
+            if ($receive) {
+                $this->dispatch(Message::class, $receive);
+            }
         }
     }
 
@@ -62,7 +64,7 @@ abstract class ConnectionlessClient extends Client implements ConnectionlessServ
      */
     public function send(string $data): bool
     {
-        return strlen($data) === stream_socket_sendto($this->socket, $data);
+        return $this->socket === null ? false : strlen($data) === stream_socket_sendto($this->socket, $data);
     }
 
     /**

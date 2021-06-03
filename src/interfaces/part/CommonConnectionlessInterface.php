@@ -3,11 +3,11 @@
 namespace chaser\stream\interfaces\part;
 
 /**
- * 无连接的流服务部分接口
+ * 流服务公共无连接部分接口
  *
  * @package chaser\stream\interfaces\part
  */
-interface ConnectionlessServiceInterface
+interface CommonConnectionlessInterface
 {
     /**
      * 默认包上限 64K-1
