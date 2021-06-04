@@ -41,8 +41,8 @@ abstract class ConnectionlessClient extends Client
     {
         if ($this->socket === null) {
             $this->create();
-            stream_set_blocking($this->socket, false);
-            $this->readyHandle();
+            $this->configureSocket();
+            $this->createSocketHandle();
         }
     }
 
@@ -76,5 +76,14 @@ abstract class ConnectionlessClient extends Client
             $this->delReadReact();
             $this->closeSocket();
         }
+    }
+
+    /**
+     * 配置套接字
+     */
+    protected function configureSocket(): void
+    {
+        // 非阻塞模式
+        stream_set_blocking($this->socket, false);
     }
 }

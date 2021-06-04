@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace chaser\stream;
 
 use chaser\stream\event\AcceptData;
+use chaser\stream\subscriber\ConnectionlessServerSubscriber;
 use chaser\stream\traits\CommonConnectionless;
 
 /**
@@ -20,6 +21,14 @@ abstract class ConnectionlessServer extends Server
      * @inheritDoc
      */
     protected static int $flags = STREAM_SERVER_BIND;
+
+    /**
+     * @inheritDoc
+     */
+    public static function subscriber(): string
+    {
+        return ConnectionlessServerSubscriber::class;
+    }
 
     /**
      * @inheritDoc
