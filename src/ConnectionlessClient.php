@@ -42,7 +42,7 @@ abstract class ConnectionlessClient extends Client
         if ($this->socket === null) {
             $this->create();
             $this->configureSocket();
-            $this->createSocketHandle();
+            $this->readyHandle();
         }
     }
 
