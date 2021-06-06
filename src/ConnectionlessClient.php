@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace chaser\stream;
 
 use chaser\stream\event\Message;
+use chaser\stream\subscriber\ClientSubscriber;
 use chaser\stream\traits\CommonConnectionless;
 
 /**
@@ -25,6 +26,14 @@ abstract class ConnectionlessClient extends Client
      * @inheritDoc
      */
     protected static int $timeout = 30;
+
+    /**
+     * @inheritDoc
+     */
+    public static function subscriber(): string
+    {
+        return ClientSubscriber::class;
+    }
 
     /**
      * @inheritDoc
